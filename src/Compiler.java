@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-public class TextEditor extends JFrame implements ActionListener {
+public class Compiler extends JFrame implements ActionListener {
     JTextArea textArea;
     JScrollPane scrollPane;
 
@@ -19,12 +19,11 @@ public class TextEditor extends JFrame implements ActionListener {
     JMenuItem saveItem;
     JMenuItem exitItem;
     JMenuItem runItem;
-    public TextEditor() throws HeadlessException {
+    public Compiler() throws HeadlessException {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Translator");
+        this.setTitle("Compiler");
         this.setSize(600,480);
         this.setLayout(new FlowLayout());
-        this.setLocationRelativeTo(null);
         textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -107,7 +106,6 @@ public class TextEditor extends JFrame implements ActionListener {
 
                 file = fileChooser.getSelectedFile();
 
-                // Append .txt extension if not already present
                 if (!file.getName().toLowerCase().endsWith(".txt")) {
                     file = new File(file.getAbsolutePath() + ".txt");
                 }
@@ -127,6 +125,13 @@ public class TextEditor extends JFrame implements ActionListener {
         if(e.getSource()==exitItem) {
             System.exit(0);
         }
+        if(e.getSource() == runItem){
+            String javaCode = Translator.convertToJava(getCode());
+            Run.runJavaCode(javaCode);
+        }
 
+    }
+    public String getCode() {
+        return textArea.getText();
     }
 }
